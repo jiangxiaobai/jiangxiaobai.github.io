@@ -97,11 +97,11 @@
 <li>输入<code>npm install</code>，安装所需要的组件</li>
 <li>输入<code>hexo g</code>，首次体验Hexo</li>
 <li>输入<code>hexo s</code>，开启服务器，访问该命令后显示的网址（本地地址，如果启动不了，注意端口是否被占用），正式体验Hexo，正常情况下是可以成功看到页面的</li>
-<li>将Hexo与Github page联系起来，设置Git的user name和email（如果是第一次的话）<blockquote>
-<p><code>cd /e/jzfu.cc</code><br>  <code>git config --global user.name &quot;jiangxiaobai&quot;</code><br>  <code>git config --global user.email &quot;229346459@qq.com&quot;</code></p>
-</blockquote>
+<li><p>将Hexo与Github page联系起来，设置Git的user name和email（如果是第一次的话）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">`cd /e/jzfu.cc`</span><br><span class="line">`git config --global user.name &quot;jiangxiaobai&quot;`</span><br><span class="line">`git config --global user.email &quot;229346459@qq.com&quot;`</span><br></pre></td></tr></table></figure>
 </li>
-<li>输入<code>ssh-keygen -t rsa -C “229346459@qq.com”</code>，连续三个回车，生成密钥，最后得到了两个文件：id_rsa和id_rsa.pub</li>
+<li><p>输入<code>ssh-keygen -t rsa -C “229346459@qq.com”</code>，连续三个回车，生成密钥，最后得到了两个文件：id_rsa和id_rsa.pub</p>
+</li>
 <li>输入<code>eval &quot;$(ssh-agent -s)&quot;</code>，添加密钥到ssh-agent</li>
 <li>再输入<code>ssh-add ~/.ssh/id_rsa</code>，添加生成的SSH key到ssh-agent</li>
 <li>登录Github，点击头像下的settings，添加ssh.新建一个new ssh key，将id_rsa.pub文件里的内容复制上去</li>
