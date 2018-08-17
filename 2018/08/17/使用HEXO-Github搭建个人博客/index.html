@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="时不时就感觉自己在炒现饭，而且还是一段时间过后，炒饭水平越来越回去了！所以决定，从此已后，尽量写好自己的“菜谱”，以后才来“靠谱”吃饭！今天就把写博客这道菜的菜谱谱一下。环境：电脑系统为window 10专业版，64位；git version 2.18.0.windows.1； node v8.11.4；npm 5.6.0；hexo: 3.7.1 相关步骤： 安装Node.js和配置好Node.j">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-17T02:59:37.915Z">
+<meta property="og:updated_time" content="2018-08-17T03:20:31.785Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用HEXO+Github搭建个人博客">
 <meta name="twitter:description" content="时不时就感觉自己在炒现饭，而且还是一段时间过后，炒饭水平越来越回去了！所以决定，从此已后，尽量写好自己的“菜谱”，以后才来“靠谱”吃饭！今天就把写博客这道菜的菜谱谱一下。环境：电脑系统为window 10专业版，64位；git version 2.18.0.windows.1； node v8.11.4；npm 5.6.0；hexo: 3.7.1 相关步骤： 安装Node.js和配置好Node.j">
@@ -99,7 +99,30 @@
 <li>输入<code>npm install</code>，安装所需要的组件</li>
 <li>输入<code>hexo g</code>，首次体验Hexo</li>
 <li>输入<code>hexo s</code>，开启服务器，访问该命令后显示的网址（本地地址，如果启动不了，注意端口是否被占用），正式体验Hexo，正常情况下是可以成功看到页面的</li>
-<li>将Hexo与Github page联系起来，设置Git的user name和email（如果是第一次的话）</li>
+<li>将Hexo与Github page联系起来，设置Git的user name和email（如果是第一次的话）<blockquote>
+<p><code>cd /e/jzfu.cc</code><br>  <code>git config --global user.name &quot;jiangxiaobai&quot;</code><br>  <code>git config --global user.email &quot;229346459@qq.com&quot;</code></p>
+</blockquote>
+</li>
+<li>输入<code>ssh-keygen -t rsa -C “229346459@qq.com”</code>，连续三个回车，生成密钥，最后得到了两个文件：id_rsa和id_rsa.pub</li>
+<li>输入<code>eval &quot;$(ssh-agent -s)&quot;</code>，添加密钥到ssh-agent</li>
+<li>再输入<code>ssh-add ~/.ssh/id_rsa</code>，添加生成的SSH key到ssh-agent</li>
+<li>登录Github，点击头像下的settings，添加ssh.新建一个new ssh key，将id_rsa.pub文件里的内容复制上去</li>
+<li>输入ssh -T <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>，测试添加ssh是否成功。如果看到Hi后面是你的用户名(jiangxiaobai)，就说明成功了</li>
+<li>配置Deployment，在其文件夹中(我这里就是jzfu.cc)，找到_config.yml文件，修改repo值（在末尾）,repo值是你在github项目里的ssh（右下角）<blockquote>
+<p>deploy:</p>
+<pre><code>type: git
+repository: git@github.com:jiangxiaobai/jiangxiaobai.github.io.git
+branch: master
+</code></pre></blockquote>
+</li>
+<li>新建一篇博客，在cmd执行命令：<code>hexo new post “博客名”</code></li>
+<li>这时候在文件夹jzfu.cc/source/_posts目录下将会看到已经创建的文件</li>
+<li>在生成以及部署文章之前，需要安装一个扩展：<code>npm install hexo-deployer-git --save</code></li>
+<li>使用编辑器编好文章，文件是以md结尾的markdown文件，选择合适的编辑器写好就可以使用命令：<code>hexo d -g</code>，生成以及部署了</li>
+<li>部署成功后访问你的<a href="https://jiangxiaobai.github.io/" target="_blank" rel="noopener">地址</a>：http://用户名.github.io。那么将看到生成的文章</li>
+<li>当然它默认生成的url比较长不太好记，我们也可以自定义域名，前期是你拥有一个域名。</li>
+<li>设置自己的域名是进入你的项目里，右侧有个settings按钮，点击它，向下拉到GitHub Pages，你会看到那边有个网址，再下去一点有个Custom domain填框，填上自己的域名，然后在域名解析设置CNAME记录就可以了。不过我发现我每次提交更新这里就会变空，得重新设置。</li>
+<li>到此为止，最基本的也是最全面的hexo+github搭建博客完结。</li>
 </ul>
 
       
