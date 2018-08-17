@@ -1,92 +1,202 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  
+    
 
-  
-  <title>使用HEXO+Github搭建个人博客 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="时不时就感觉自己在炒现饭，而且还是一段时间过后，炒饭水平越来越回去了！所以决定，从此已后，尽量写好自己的“菜谱”，以后才来“靠谱”吃饭！今天就把写博客这道菜的菜谱谱一下。环境：电脑系统为window 10专业版，64位；git version 2.18.0.windows.1； node v8.11.4；npm 5.6.0；hexo: 3.7.1 相关步骤： 安装Node.js和配置好Node.j">
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>使用HEXO+Github搭建个人博客 | jzfu&#39;s blog | myblog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="时不时就感觉自己在炒现饭，而且还是一段时间过后，炒饭水平越来越回去了！所以决定，从此已后，尽量写好自己的“菜谱”，以后才来“靠谱”吃饭！今天就把写博客这道菜的菜谱谱一下。环境：电脑系统为window 10专业版，64位；git version 2.18.0.windows.1； node v8.11.4；npm 5.6.0；hexo: 3.7.1 相关步骤： 安装Node.js和配置好Node.j">
+<meta name="keywords" content="运维 开发 运维开发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用HEXO+Github搭建个人博客">
-<meta property="og:url" content="http://yoursite.com/2018/08/17/使用HEXO-Github搭建个人博客/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/index.html">
+<meta property="og:site_name" content="jzfu&#39;s blog">
 <meta property="og:description" content="时不时就感觉自己在炒现饭，而且还是一段时间过后，炒饭水平越来越回去了！所以决定，从此已后，尽量写好自己的“菜谱”，以后才来“靠谱”吃饭！今天就把写博客这道菜的菜谱谱一下。环境：电脑系统为window 10专业版，64位；git version 2.18.0.windows.1； node v8.11.4；npm 5.6.0；hexo: 3.7.1 相关步骤： 安装Node.js和配置好Node.j">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2018-08-17T03:51:33.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用HEXO+Github搭建个人博客">
 <meta name="twitter:description" content="时不时就感觉自己在炒现饭，而且还是一段时间过后，炒饭水平越来越回去了！所以决定，从此已后，尽量写好自己的“菜谱”，以后才来“靠谱”吃饭！今天就把写博客这道菜的菜谱谱一下。环境：电脑系统为window 10专业版，64位；git version 2.18.0.windows.1； node v8.11.4；npm 5.6.0；hexo: 3.7.1 相关步骤： 安装Node.js和配置好Node.j">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
+    
+        <link rel="alternate" type="application/atom+xml" title="jzfu&#39;s blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
 </head>
 
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Zhifu Jiang</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
       </div>
     </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-使用HEXO-Github搭建个人博客" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/17/使用HEXO-Github搭建个人博客/" class="article-date">
-  <time datetime="2018-08-17T02:09:56.000Z" itemprop="datePublished">2018-08-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
         
-  
-    <h1 class="article-title" itemprop="name">
-      使用HEXO+Github搭建个人博客
-    </h1>
-  
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
 
-      </header>
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">使用HEXO+Github搭建个人博客</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="検索">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">使用HEXO+Github搭建个人博客</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-08-17T02:09:56.000Z" itemprop="datePublished" class="page-time">
+  2018-08-17
+</time>
+
+
+            
+        </h5>
+    </div>
+
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>时不时就感觉自己在炒现饭，而且还是一段时间过后，炒饭水平越来越回去了！所以决定，从此已后，尽量写好自己的“菜谱”，以后才来“靠谱”吃饭！今天就把写博客这道菜的菜谱谱一下。<br>环境：电脑系统为window 10专业版，64位；git version 2.18.0.windows.1； node v8.11.4；npm 5.6.0；hexo: 3.7.1</p>
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#相关步骤："><span class="post-toc-number">1.</span> <span class="post-toc-text">相关步骤：</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-使用HEXO-Github搭建个人博客"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">使用HEXO+Github搭建个人博客</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-08-17 10:09:56" datetime="2018-08-17T02:09:56.000Z"  itemprop="datePublished">2018-08-17</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>时不时就感觉自己在炒现饭，而且还是一段时间过后，炒饭水平越来越回去了！所以决定，从此已后，尽量写好自己的“菜谱”，以后才来“靠谱”吃饭！今天就把写博客这道菜的菜谱谱一下。<br>环境：电脑系统为window 10专业版，64位；git version 2.18.0.windows.1； node v8.11.4；npm 5.6.0；hexo: 3.7.1</p>
 <h3 id="相关步骤："><a href="#相关步骤：" class="headerlink" title="相关步骤："></a>相关步骤：</h3><ul>
 <li>安装Node.js和配置好Node.js环境(windows下安装软件没什么好说的下一步下一步就OK)</li>
 <li>安装Git和配置好Git环境，安装成功的象征就是在电脑上任何位置鼠标右键能够出现git相关选择</li>
@@ -123,107 +233,294 @@
 <li>到此为止，最基本的也是最全面的hexo+github搭建博客完结。</li>
 </ul>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/17/使用HEXO-Github搭建个人博客/" data-id="cjkxdgk8f0002m8up8w1q14cw" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
+        </div>
+
+        <blockquote class="post-copyright">
     
-<nav id="article-nav">
-  
-  
-    <a href="/2018/08/17/再次问好-Hexo/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">再次问好,Hexo</div>
+    <div class="content">
+        
+<span class="post-time">
+    最終更新：<time datetime="2018-08-17T03:51:33.416Z" itemprop="dateUpdated">2018-08-17 11:51:33</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/08/17/使用HEXO-Github搭建个人博客/" target="_blank" rel="external">https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://www.jzfu.cc">
+            <img src="/img/avatar.jpg" alt="Zhifu Jiang">
+            Zhifu Jiang
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/&title=《使用HEXO+Github搭建个人博客》 — jzfu's blog&pic=https://www.jzfu.cc/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/&title=《使用HEXO+Github搭建个人博客》 — jzfu's blog&source=我只是一个小小的运维。笑哭……" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用HEXO+Github搭建个人博客》 — jzfu's blog&url=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/&via=https://www.jzfu.cc" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
     </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/08/17/再次问好-Hexo/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">再次问好,Hexo</h4>
+      </a>
+    </div>
   
 </nav>
 
-  
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </article>
 
-</section>
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
         
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li></ul>
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
     </div>
-  </div>
+</div>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
         
-          <li>
-            <a href="/2018/08/17/使用HEXO-Github搭建个人博客/">使用HEXO+Github搭建个人博客</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/17/再次问好-Hexo/">再次问好,Hexo</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/17/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>このブログの内容物は<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示 - 非営利 - 継承 4.0 国際ライセンスの下に提供されています</a></span>
+        </p>
     </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    <div class="bottom">
+        <p><span>Zhifu Jiang &copy; 2015 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
     </div>
-  </div>
 </footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
 
 
 
-  </div>
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/&title=《使用HEXO+Github搭建个人博客》 — jzfu's blog&pic=https://www.jzfu.cc/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/&title=《使用HEXO+Github搭建个人博客》 — jzfu's blog&source=我只是一个小小的运维。笑哭……" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用HEXO+Github搭建个人博客》 — jzfu's blog&url=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/&via=https://www.jzfu.cc" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.jzfu.cc/2018/08/17/使用HEXO-Github搭建个人博客/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACs0lEQVR42u3aQW4bMRAEQP//0841SCCpe4aUFaT2ZEhrLosGluMefn3F1/eD6/dv/77z0TiPxszvOXzh4eHhHZp6Mun2zuS3Zp8/XAI8PDy8a7zkJf7o/uffPv/8+WIdeAoeHh7ex/CSTeL5U2b34+Hh4f3rvFmIkIQLyfh4eHh4P8vLg9o8nJ0t3yy8OJC14OHh4cW8vIv0OT9f6e/h4eHhrbvqbTMsKaw3ZXc9Wzw8PLwLvFOtqVlQ225Fw3ni4eHhvYXXbhJJ6HAj5ojiDzw8PLyjvATWFsf5J3mBPjyGhYeHh3eNN7vaMno2wux+PDw8vHu8vNnfvrjzErwNc4e9Ozw8PLxDvFlranNMah8cJ/N82N/Dw8PDW/Pe2dzKt4fNcvxY7w4PD+8/4yWPzwdqt5NhxNAuNB4eHt4hXlsE582qTfMs72G9UODh4eFd4M0OS+Xbxr1DWsU/AHh4eHhHeflU8oZZElvMkG3TDg8PD+8Gr40Jkm2giFaTgjg+cPBiw8DDw8M7xNs0mZJidxZbbBb9RdaCh4eHt+a1Lf9ZUXvqqGsbFuPh4eHd4G0OpM5iiM1hhfpQAh4eHt41Xtt8mhXZm0kPY2I8PDy8C7z2YbNpbWKONv742kwaDw8PL+Z9l1cyTvuUdnNKWmJ4eHh4t3mzibbxwaxAb0v5IpLAw8PDW/DygnX24t40vWbFNx4eHt57eHm5nL/0ZyV7cbph0+XDw8PDK3mbGCIvlPNjWG3f/8UfCQ8PD+8Cr33htuzk8e0GM1tQPDw8vLO8fYHbHhSYlcizZcXDw8O7x0uGfmfsmy/TCyoeHh7eB/BOHQ5oQ4p8PquNAQ8PD+8Crw0F8gi4LamjzQMPDw/vGq8tfNsJzQKI/VaEh4eHd4O3iVPbd3Lb+spj3CtpMR4eHt6f1y/la+4DrjQDVAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
 </body>
 </html>
