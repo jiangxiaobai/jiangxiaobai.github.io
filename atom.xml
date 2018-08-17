@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>jzfu&#39;s blog</title>
   <icon>https://www.gravatar.com/avatar/8f7e9d98b2345f97d9143a4af3f32242</icon>
-  <subtitle>myblog</subtitle>
+  <subtitle>求知若大虫，虚心如小白</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jzfu.cc/"/>
@@ -10,7 +10,7 @@
   <id>https://www.jzfu.cc/</id>
   
   <author>
-    <name>Zhifu Jiang</name>
+    <name>姜志福(Zhifu Jiang)</name>
     <email>229346459@qq.com</email>
   </author>
   
