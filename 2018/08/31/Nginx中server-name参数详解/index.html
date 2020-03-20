@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Nginx中server_name参数详解 | Jzfu&#39;s Blog | 求知若大虫，虚心如小白。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Nginx">
+    <meta name="description" content="事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的123456server &amp;#123;        listen 80;        listen [::]:80;        server_name *.ddmg.com;">
+<meta name="keywords" content="Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx中server_name参数详解">
+<meta property="og:url" content="https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/index.html">
+<meta property="og:site_name" content="Jzfu&#39;s Blog">
+<meta property="og:description" content="事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的123456server &amp;#123;        listen 80;        listen [::]:80;        server_name *.ddmg.com;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-20T03:52:53.816Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx中server_name参数详解">
+<meta name="twitter:description" content="事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的123456server &amp;#123;        listen 80;        listen [::]:80;        server_name *.ddmg.com;">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/myimg/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">姜志福(Jeff Jiang)</h5>
+          <a href="mailto:229346459@qq.com" title="229346459@qq.com" class="mail">229346459@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/jiangxiaobai" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Nginx中server_name参数详解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Nginx中server_name参数详解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-08-31T00:55:20.000Z" itemprop="datePublished" class="page-time">
+  2018-08-31
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Nginx/">Nginx</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的"><span class="post-toc-number">1.</span> <span class="post-toc-text">事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#配置完成检查语法无误后重启nginx，测试发现，它并没有达到我想要的效果（并没有跳转至https），而是访问什么域名，它就直接跳转到了具体域名的配置文件。后研究发现，Nginx中的server-name指令在接到请求后有一定的匹配顺序。特记录如下："><span class="post-toc-number">2.</span> <span class="post-toc-text">配置完成检查语法无误后重启nginx，测试发现，它并没有达到我想要的效果（并没有跳转至https），而是访问什么域名，它就直接跳转到了具体域名的配置文件。后研究发现，Nginx中的server_name指令在接到请求后有一定的匹配顺序。特记录如下：</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#nginx将按照1-2-3-4的顺序对server-name进行匹配，并且只要有一项匹配以后就会停止搜索，所以我们在使用这个指令的时候一定要分清楚它的匹配顺序（类似于location指令）。"><span class="post-toc-number">3.</span> <span class="post-toc-text">nginx将按照1,2,3,4的顺序对server_name进行匹配，并且只要有一项匹配以后就会停止搜索，所以我们在使用这个指令的时候一定要分清楚它的匹配顺序（类似于location指令）。</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#server-name指令一项很实用的功能便是可以在使用正则表达式的捕获功能，这样可以尽量精简配置文件，毕竟太长的配置文件日常维护也很不方便。下面是2个具体的应用："><span class="post-toc-number">4.</span> <span class="post-toc-text">server_name指令一项很实用的功能便是可以在使用正则表达式的捕获功能，这样可以尽量精简配置文件，毕竟太长的配置文件日常维护也很不方便。下面是2个具体的应用：</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Nginx中server-name参数详解"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Nginx中server_name参数详解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-08-31 08:55:20" datetime="2018-08-31T00:55:20.000Z"  itemprop="datePublished">2018-08-31</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Nginx/">Nginx</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h4 id="事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的"><a href="#事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的" class="headerlink" title="事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的"></a>事情的经过是这样的，我一个nginx服务器下有多个站点，每一个站点都可以通过http或https访问，但我都想强制重定向到https，为了不修改每一个配置文件，于是我就想加一个配置文件来统一跳转。配置文件是这样的</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        listen [::]:80;</span><br><span class="line">        server_name *.ddmg.com;</span><br><span class="line">        return 301 https://$host$request_uri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="配置完成检查语法无误后重启nginx，测试发现，它并没有达到我想要的效果（并没有跳转至https），而是访问什么域名，它就直接跳转到了具体域名的配置文件。后研究发现，Nginx中的server-name指令在接到请求后有一定的匹配顺序。特记录如下："><a href="#配置完成检查语法无误后重启nginx，测试发现，它并没有达到我想要的效果（并没有跳转至https），而是访问什么域名，它就直接跳转到了具体域名的配置文件。后研究发现，Nginx中的server-name指令在接到请求后有一定的匹配顺序。特记录如下：" class="headerlink" title="配置完成检查语法无误后重启nginx，测试发现，它并没有达到我想要的效果（并没有跳转至https），而是访问什么域名，它就直接跳转到了具体域名的配置文件。后研究发现，Nginx中的server_name指令在接到请求后有一定的匹配顺序。特记录如下："></a>配置完成检查语法无误后重启nginx，测试发现，它并没有达到我想要的效果（并没有跳转至https），而是访问什么域名，它就直接跳转到了具体域名的配置文件。后研究发现，Nginx中的server_name指令在接到请求后有一定的匹配顺序。特记录如下：</h4><ol>
+<li><p>准确的server_name匹配，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">     listen       80;</span><br><span class="line">     server_name  ddmg.com  www.ddmg.com;</span><br><span class="line">     ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以*通配符开始的字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">     listen       80;</span><br><span class="line">     server_name  *.ddmg.com;</span><br><span class="line">     ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以*通配符结束的字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">     listen       80;</span><br><span class="line">     server_name  www.*;</span><br><span class="line">     ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>匹配正则表达式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">     listen       80;</span><br><span class="line">     server_name  ~^(?.+)\.ddmg\.com$;</span><br><span class="line">     ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="nginx将按照1-2-3-4的顺序对server-name进行匹配，并且只要有一项匹配以后就会停止搜索，所以我们在使用这个指令的时候一定要分清楚它的匹配顺序（类似于location指令）。"><a href="#nginx将按照1-2-3-4的顺序对server-name进行匹配，并且只要有一项匹配以后就会停止搜索，所以我们在使用这个指令的时候一定要分清楚它的匹配顺序（类似于location指令）。" class="headerlink" title="nginx将按照1,2,3,4的顺序对server_name进行匹配，并且只要有一项匹配以后就会停止搜索，所以我们在使用这个指令的时候一定要分清楚它的匹配顺序（类似于location指令）。"></a>nginx将按照1,2,3,4的顺序对server_name进行匹配，并且只要有一项匹配以后就会停止搜索，所以我们在使用这个指令的时候一定要分清楚它的匹配顺序（类似于location指令）。</h4><h4 id="server-name指令一项很实用的功能便是可以在使用正则表达式的捕获功能，这样可以尽量精简配置文件，毕竟太长的配置文件日常维护也很不方便。下面是2个具体的应用："><a href="#server-name指令一项很实用的功能便是可以在使用正则表达式的捕获功能，这样可以尽量精简配置文件，毕竟太长的配置文件日常维护也很不方便。下面是2个具体的应用：" class="headerlink" title="server_name指令一项很实用的功能便是可以在使用正则表达式的捕获功能，这样可以尽量精简配置文件，毕竟太长的配置文件日常维护也很不方便。下面是2个具体的应用："></a>server_name指令一项很实用的功能便是可以在使用正则表达式的捕获功能，这样可以尽量精简配置文件，毕竟太长的配置文件日常维护也很不方便。下面是2个具体的应用：</h4><ol>
+<li>在一个server块中配置多个站点：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">   &#123;</span><br><span class="line">     listen       80;</span><br><span class="line">     server_name  ~^(www\.)?(.+)$;</span><br><span class="line">     index index.php index.html;</span><br><span class="line">     root  /data/wwwsite/$2;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li><p>站点的主目录应该类似于这样的结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/data/wwwsite/ddmg.com</span><br><span class="line">/data/wwwsite/nginx.org</span><br><span class="line">/data/wwwsite/baidu.com</span><br><span class="line">/data/wwwsite/google.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这样就可以只使用一个server块来完成多个站点的配置。</p>
+</li>
+</ul>
+<ol start="2">
+<li>在一个server块中为一个站点配置多个二级域名。实际网站目录结构中我们通常会为站点的二级域名独立创建一个目录，同样我们可以使用正则的捕获来实现在一个server块中配置多个二级域名：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">   &#123;</span><br><span class="line">     listen       80;</span><br><span class="line">     server_name  ~^(.+)?\.ddmg\.com$;</span><br><span class="line">     index index.html;</span><br><span class="line">     if ($host = ddmg.com)&#123;</span><br><span class="line">         rewrite ^ http://www.ddmg.com permanent;</span><br><span class="line">     &#125;</span><br><span class="line">     root  /data/wwwsite/ddmg.com/$1/;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li><p>站点的目录结构应该如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/data/wwwsite/ddmg.com/www/</span><br><span class="line">/data/wwwsite/ddmg.com/nginx/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这样访问<a href="http://www.ddmg.com时root目录为/data/wwwsite/ddmg.com/www/，nginx.ddmg.com时为/data/wwwsite/ddmg.com/nginx/，以此类推。后面if语句的作用是将ddmg.com的方位重定向到www.ddmg.com，这样既解决了网站的主目录访问，又可以增加seo中对www.ddmg.com的域名权重。" target="_blank" rel="noopener">www.ddmg.com时root目录为/data/wwwsite/ddmg.com/www/，nginx.ddmg.com时为/data/wwwsite/ddmg.com/nginx/，以此类推。后面if语句的作用是将ddmg.com的方位重定向到www.ddmg.com，这样既解决了网站的主目录访问，又可以增加seo中对www.ddmg.com的域名权重。</a></p>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-03-20T03:52:53.816Z" itemprop="dateUpdated">2020-03-20 11:52:53</time>
+</span><br>
+
+
+        
+        <a href="/2018/08/31/Nginx中server-name参数详解/" target="_blank" rel="external">https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://www.jzfu.com">
+            <img src="/img/myimg/avatar.jpg" alt="姜志福(Jeff Jiang)">
+            姜志福(Jeff Jiang)
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/&title=《Nginx中server_name参数详解》 — Jzfu's Blog&pic=https://www.jzfu.com/img/myimg/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/&title=《Nginx中server_name参数详解》 — Jzfu's Blog&source=吾生也有涯，而知也无涯。在知识的汪洋学海里，要像大虫子一样学会虎食鲸吞；山外有山,人外有人。在高手如云的茫茫人海中，要像小白痴一样学会虛心请教。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Nginx中server_name参数详解》 — Jzfu's Blog&url=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/&via=https://www.jzfu.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/09/04/Ubuntu16-04搭建OpenVPN/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Ubuntu16.04搭建OpenVPN</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/08/24/Nginx版本平滑升级/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Nginx版本平滑升级</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/myimg/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/myimg/wechat.jpg" data-alipay="/img/myimg/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>姜志福(Jeff Jiang) &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/&title=《Nginx中server_name参数详解》 — Jzfu's Blog&pic=https://www.jzfu.com/img/myimg/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/&title=《Nginx中server_name参数详解》 — Jzfu's Blog&source=吾生也有涯，而知也无涯。在知识的汪洋学海里，要像大虫子一样学会虎食鲸吞；山外有山,人外有人。在高手如云的茫茫人海中，要像小白痴一样学会虛心请教。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Nginx中server_name参数详解》 — Jzfu's Blog&url=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/&via=https://www.jzfu.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://www.jzfu.com/2018/08/31/Nginx中server-name参数详解/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

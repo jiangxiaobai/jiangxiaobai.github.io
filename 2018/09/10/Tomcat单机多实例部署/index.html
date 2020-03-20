@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Tomcat单机多实例部署 | Jzfu&#39;s Blog | 求知若大虫，虚心如小白。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="JAVA,Tomcat">
+    <meta name="description" content="关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA_HOME及CATALINA_BASE两个目录。CATALINA_HOME 指Tomcat安装路径，CATALINA_BASE 指实例所在位置。CATALINA_HOME 路径下只需要包含 bin 和 lib 目录，而 CATALINA_BASE 只存">
+<meta name="keywords" content="JAVA,Tomcat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomcat单机多实例部署">
+<meta property="og:url" content="https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/index.html">
+<meta property="og:site_name" content="Jzfu&#39;s Blog">
+<meta property="og:description" content="关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA_HOME及CATALINA_BASE两个目录。CATALINA_HOME 指Tomcat安装路径，CATALINA_BASE 指实例所在位置。CATALINA_HOME 路径下只需要包含 bin 和 lib 目录，而 CATALINA_BASE 只存">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-20T03:52:53.816Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tomcat单机多实例部署">
+<meta name="twitter:description" content="关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA_HOME及CATALINA_BASE两个目录。CATALINA_HOME 指Tomcat安装路径，CATALINA_BASE 指实例所在位置。CATALINA_HOME 路径下只需要包含 bin 和 lib 目录，而 CATALINA_BASE 只存">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/myimg/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">姜志福(Jeff Jiang)</h5>
+          <a href="mailto:229346459@qq.com" title="229346459@qq.com" class="mail">229346459@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/jiangxiaobai" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Tomcat单机多实例部署</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Tomcat单机多实例部署</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-09-10T03:57:36.000Z" itemprop="datePublished" class="page-time">
+  2018-09-10
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Tomcat/">Tomcat</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA-HOME及CATALINA-BASE两个目录。CATALINA-HOME-指Tomcat安装路径，CATALINA-BASE-指实例所在位置。CATALINA-HOME-路径下只需要包含-bin-和-lib-目录，而-CATALINA-BASE-只存放-conf、webapps、logs-等这些文件，这样部署的好处在于升级方便，配置及安装文件间互不影响，在不影响-Tomcat-实例的前提下，替换掉-CATALINA-HOME-中的安装文件就完成全部实例的升级了。"><span class="post-toc-number">1.</span> <span class="post-toc-text">关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA_HOME及CATALINA_BASE两个目录。CATALINA_HOME 指Tomcat安装路径，CATALINA_BASE 指实例所在位置。CATALINA_HOME 路径下只需要包含 bin 和 lib 目录，而 CATALINA_BASE 只存放 conf、webapps、logs 等这些文件，这样部署的好处在于升级方便，配置及安装文件间互不影响，在不影响 Tomcat 实例的前提下，替换掉 CATALINA_HOME 中的安装文件就完成全部实例的升级了。</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Tomcat单机多实例部署"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Tomcat单机多实例部署</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-09-10 11:57:36" datetime="2018-09-10T03:57:36.000Z"  itemprop="datePublished">2018-09-10</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Tomcat/">Tomcat</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h5 id="关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA-HOME及CATALINA-BASE两个目录。CATALINA-HOME-指Tomcat安装路径，CATALINA-BASE-指实例所在位置。CATALINA-HOME-路径下只需要包含-bin-和-lib-目录，而-CATALINA-BASE-只存放-conf、webapps、logs-等这些文件，这样部署的好处在于升级方便，配置及安装文件间互不影响，在不影响-Tomcat-实例的前提下，替换掉-CATALINA-HOME-中的安装文件就完成全部实例的升级了。"><a href="#关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA-HOME及CATALINA-BASE两个目录。CATALINA-HOME-指Tomcat安装路径，CATALINA-BASE-指实例所在位置。CATALINA-HOME-路径下只需要包含-bin-和-lib-目录，而-CATALINA-BASE-只存放-conf、webapps、logs-等这些文件，这样部署的好处在于升级方便，配置及安装文件间互不影响，在不影响-Tomcat-实例的前提下，替换掉-CATALINA-HOME-中的安装文件就完成全部实例的升级了。" class="headerlink" title="关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA_HOME及CATALINA_BASE两个目录。CATALINA_HOME 指Tomcat安装路径，CATALINA_BASE 指实例所在位置。CATALINA_HOME 路径下只需要包含 bin 和 lib 目录，而 CATALINA_BASE 只存放 conf、webapps、logs 等这些文件，这样部署的好处在于升级方便，配置及安装文件间互不影响，在不影响 Tomcat 实例的前提下，替换掉 CATALINA_HOME 中的安装文件就完成全部实例的升级了。"></a>关于Tomcat单机多实例部署，官方并不建议拷贝全部的tomcat目录来进行多实例部署，而是以一种更优雅的方式来实现。总体思路就是分CATALINA_HOME及CATALINA_BASE两个目录。CATALINA_HOME 指Tomcat安装路径，CATALINA_BASE 指实例所在位置。CATALINA_HOME 路径下只需要包含 bin 和 lib 目录，而 CATALINA_BASE 只存放 conf、webapps、logs 等这些文件，这样部署的好处在于升级方便，配置及安装文件间互不影响，在不影响 Tomcat 实例的前提下，替换掉 CATALINA_HOME 中的安装文件就完成全部实例的升级了。</h5><ol>
+<li><p>复制出两个 Tomcat 实例。在 Tomcat 安装路径的同一级目录下，新建两个tomcat-1、tomcat-2文件夹，先把安装路径下的 conf、webapps、temp、logs、work 这五个文件移动到tomcat-1和tomcat-2实例中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir tomcat-1 tomcat-2</span><br><span class="line"><span class="built_in">cd</span> apache-tomcat-8.5.32</span><br><span class="line">mv conf/ webapps/ temp/ logs/ work/ -t ../tomcat-1</span><br><span class="line">cp tomcat-1/* tomcat-2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建 Tomcat 启动、停止脚本。依然是在 Tomcat 安装路径的同一级目录下，新建两个tomcat-shell文件夹，用于存放启动和停止脚本，同时赋予文件全部权限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir tomcat-shell</span><br><span class="line"><span class="built_in">cd</span> tomcat-shell/</span><br><span class="line">vim start_tomcat.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>#!/bin/bash</p>
+<p>export CATALINA_HOME=/opt/apache-tomcat-8.5.32<br>export CATALINA_BASE=${1%/}</p>
+<p>echo $CATALINA_BASE</p>
+<p>TOMCAT_ID=<code>ps aux |grep &quot;java&quot;|grep &quot;Dcatalina.base=$CATALINA_BASE &quot;|grep -v &quot;grep&quot;|awk &#39;{ print $2}&#39;</code></p>
+<p>if [ -n “$TOMCAT_ID” ] ; then<br>echo “tomcat(${TOMCAT_ITOMCAT_ID}) still running now , please shutdown it first”;<br>    exit 2;<br>fi</p>
+<p>TOMCAT_START_LOG=<code>$CATALINA_HOME/bin/startup.sh</code></p>
+<p>if [ “$?” = “0” ]; then<br>    echo “$0 ${1%/} start succeed”<br>else<br>    echo “$0 ${1%/} start failed”<br>    echo $TOMCAT_START_LOG<br>fi<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim stop_tomcat.sh</span><br></pre></td></tr></table></figure></p>
+<p>#!/bin/bash</p>
+<p>export CATALINA_HOME=/opt/apache-tomcat-8.5.32<br>export CATALINA_BASE=${1%/}</p>
+<p>echo $CATALINA_BASE</p>
+<p>TOMCAT_ID=<code>ps aux |grep &quot;java&quot;|grep &quot;[D]catalina.base=$CATALINA_BASE &quot;|awk &#39;{ print $2}&#39;</code></p>
+<p>if [ -n “$TOMCAT_ID” ] ; then<br>TOMCAT_STOP_LOG=<code>$CATALINA_HOME/bin/shutdown.sh</code><br>else<br>    echo “Tomcat instance not found : ${1%/}”<br>    exit</p>
+<p>fi</p>
+<p>if [ “$?” = “0” ]; then<br>    echo “$0 ${1%/} stop succeed”<br>else<br>    echo “$0 ${1%/} stop failed”<br>    echo $TOMCAT_STOP_LOG<br>fi<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 start_tomcat.sh stop_tomcat.sh</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li><p>配置server.xml 端口。同一个服务器部署不同Tomcat要设置不同的端口，不然会报端口冲突，所以我们只需要修改conf/server.xml中的其中前三个端口就行了。但它有四个分别是：<br>Server Port：该端口用于监听关闭tomcat的shutdown命令，默认为8005<br>Connector Port：该端口用于监听HTTP的请求，默认为8080<br>AJP Port：该端口用于监听AJP（ Apache JServ Protocol ）协议上的请求，通常用于整合Apache Server等其他HTTP服务器，默认为8009<br>Redirect Port：重定向端口，出现在Connector配置中，如果该Connector仅支持非SSL的普通http请求，那么该端口会把 https 的请求转发到这个Redirect Port指定的端口，默认为8443；<br>我这里把 tomcat-2 实例的 Connector Port 改为了 8081 ，并分别在 tomcat-1、tomcat-2 的 webapps/ROOT 目录下放入了一个页面文件，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;title&gt;Tomcat-1&lt;/title&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    Hello Tomcat-1.</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;title&gt;Tomcat-2&lt;/title&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    Hello Tomcat-2.</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动。直接通过执行我们刚写的脚本，传入某一个 Tomcat 实例路径即可来启动对应的 Tomcat。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/opt/tomcat-shell/start_tomcat.sh /opt/tomcat-1</span><br><span class="line">/opt/tomcat-shell/start_tomcat.sh /opt/tomcat-2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>浏览器查看<a href="http://192.168.199.240:8080及http://192.168.199.240:8081" target="_blank" rel="noopener">http://192.168.199.240:8080及http://192.168.199.240:8081</a></p>
+</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-03-20T03:52:53.816Z" itemprop="dateUpdated">2020-03-20 11:52:53</time>
+</span><br>
+
+
+        
+        <a href="/2018/09/10/Tomcat单机多实例部署/" target="_blank" rel="external">https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://www.jzfu.com">
+            <img src="/img/myimg/avatar.jpg" alt="姜志福(Jeff Jiang)">
+            姜志福(Jeff Jiang)
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tomcat/">Tomcat</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/&title=《Tomcat单机多实例部署》 — Jzfu's Blog&pic=https://www.jzfu.com/img/myimg/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/&title=《Tomcat单机多实例部署》 — Jzfu's Blog&source=吾生也有涯，而知也无涯。在知识的汪洋学海里，要像大虫子一样学会虎食鲸吞；山外有山,人外有人。在高手如云的茫茫人海中，要像小白痴一样学会虛心请教。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Tomcat单机多实例部署》 — Jzfu's Blog&url=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/&via=https://www.jzfu.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/03/20/RabbitMQ安装/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Ubuntu18.04上RabbitMQ安装</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/09/10/PHP安装kafka扩展/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">PHP安装kafka扩展</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/myimg/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/myimg/wechat.jpg" data-alipay="/img/myimg/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>姜志福(Jeff Jiang) &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/&title=《Tomcat单机多实例部署》 — Jzfu's Blog&pic=https://www.jzfu.com/img/myimg/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/&title=《Tomcat单机多实例部署》 — Jzfu's Blog&source=吾生也有涯，而知也无涯。在知识的汪洋学海里，要像大虫子一样学会虎食鲸吞；山外有山,人外有人。在高手如云的茫茫人海中，要像小白痴一样学会虛心请教。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Tomcat单机多实例部署》 — Jzfu's Blog&url=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/&via=https://www.jzfu.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://www.jzfu.com/2018/09/10/Tomcat单机多实例部署/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

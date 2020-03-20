@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Nginx版本平滑升级 | Jzfu&#39;s Blog | 求知若大虫，虚心如小白。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Nginx">
+    <meta name="description" content="这篇文章主要介绍了Nginx1.4.4版本平滑升级新版本1.10.3的相关资料,需要的朋友可以参考下 首先查看现在环境nginx的版本为1.4.4 编译的参数； 12345[root@localhost ~]# nginx -Vnginx version: nginx/1.4.4built by gcc 4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) TLS SNI">
+<meta name="keywords" content="Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx版本平滑升级">
+<meta property="og:url" content="https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/index.html">
+<meta property="og:site_name" content="Jzfu&#39;s Blog">
+<meta property="og:description" content="这篇文章主要介绍了Nginx1.4.4版本平滑升级新版本1.10.3的相关资料,需要的朋友可以参考下 首先查看现在环境nginx的版本为1.4.4 编译的参数； 12345[root@localhost ~]# nginx -Vnginx version: nginx/1.4.4built by gcc 4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) TLS SNI">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-20T03:52:53.816Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx版本平滑升级">
+<meta name="twitter:description" content="这篇文章主要介绍了Nginx1.4.4版本平滑升级新版本1.10.3的相关资料,需要的朋友可以参考下 首先查看现在环境nginx的版本为1.4.4 编译的参数； 12345[root@localhost ~]# nginx -Vnginx version: nginx/1.4.4built by gcc 4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) TLS SNI">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/myimg/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">姜志福(Jeff Jiang)</h5>
+          <a href="mailto:229346459@qq.com" title="229346459@qq.com" class="mail">229346459@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/jiangxiaobai" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Nginx版本平滑升级</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Nginx版本平滑升级</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-08-24T03:41:52.000Z" itemprop="datePublished" class="page-time">
+  2018-08-24
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Nginx/">Nginx</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#这篇文章主要介绍了Nginx1-4-4版本平滑升级新版本1-10-3的相关资料-需要的朋友可以参考下"><span class="post-toc-number">1.</span> <span class="post-toc-text">这篇文章主要介绍了Nginx1.4.4版本平滑升级新版本1.10.3的相关资料,需要的朋友可以参考下</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Nginx版本平滑升级"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Nginx版本平滑升级</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-08-24 11:41:52" datetime="2018-08-24T03:41:52.000Z"  itemprop="datePublished">2018-08-24</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Nginx/">Nginx</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="这篇文章主要介绍了Nginx1-4-4版本平滑升级新版本1-10-3的相关资料-需要的朋友可以参考下"><a href="#这篇文章主要介绍了Nginx1-4-4版本平滑升级新版本1-10-3的相关资料-需要的朋友可以参考下" class="headerlink" title="这篇文章主要介绍了Nginx1.4.4版本平滑升级新版本1.10.3的相关资料,需要的朋友可以参考下"></a>这篇文章主要介绍了Nginx1.4.4版本平滑升级新版本1.10.3的相关资料,需要的朋友可以参考下</h3><ul>
+<li><p>首先查看现在环境nginx的版本为1.4.4 编译的参数；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# nginx -V</span><br><span class="line">nginx version: nginx/1.4.4</span><br><span class="line">built by gcc 4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) </span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --user=www --group=www --prefix=/alidata/server/nginx --with-http_stub_status_module --without-http-cache --with-http_ssl_module --with-http_gzip_static_module</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>平滑升级步骤如下：</p>
+</li>
+<li><p>下载nginx1.10.3版本，解压并进入解压后的目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# wget -P /opt/ http://nginx.org/download/nginx-1.10.3.tar.gz</span><br><span class="line">[root@localhost ~]# cd /opt/ </span><br><span class="line">[root@localhost src]# tar -zxvf nginx-1.10.3.tar.gz</span><br><span class="line">[root@localhost src]# cd nginx-1.10.3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译安装之前查看nginx进程ID信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost objs]# ps -ef |grep nginx</span><br><span class="line">root     18431     1  0 10:06 ?        00:00:00 nginx: master process /alidata/server/nginx/sbin/nginx -c /alidata/server/nginx/conf/nginx.conf</span><br><span class="line">www      18433 18431  0 10:06 ?        00:00:00 nginx: worker process</span><br><span class="line">www      18434 18431  0 10:06 ?        00:00:00 nginx: worker process</span><br><span class="line">www      18435 18431  0 10:06 ?        00:00:00 nginx: worker process</span><br><span class="line">www      18436 18431  0 10:06 ?        00:00:00 nginx: worker process</span><br><span class="line">root     20489  5324  0 10:09 pts/0    00:00:00 grep --color=auto nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译安装：指定用户www 支持ssl 支持pcre 支持状态查询 支持静态压缩模块；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nginx-1.10.3]# ./configure --user=www --group=www --prefix=/alidata/server/nginx --with-http_stub_status_module --without-http-cache --with-http_ssl_module --with-http_gzip_static_module --with-pcre=../pcre-8.40</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译安装后可以echo $?查看是否成功，成功后只需要执行make，不需要<code>make install</code>；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nginx-1.10.3]# make</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>平滑升级，先移走现有的nginx二进制文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nginx-1.10.3]# mv /alidata/server/nginx/sbin/nginx /alidata/server/nginx/sbin/nginx.old</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝新生成的nginx二进制文件到指定目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nginx-1.10.3]# cp objs/nginx /alidata/server/nginx/sbin/nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行升级命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nginx-1.10.3]# make upgrade</span><br><span class="line">/alidata/server/nginx/sbin/nginx -t</span><br><span class="line">nginx: the configuration file /alidata/server/nginx/conf/nginx.con																		0f syntax is ok</span><br><span class="line">nginx: configuration file /alidata/server/nginx/conf/nginx.conf test is successful</span><br><span class="line">kill -USR2 `cat /alidata/server/nginx/logs/nginx.pid`</span><br><span class="line">sleep 1</span><br><span class="line">test -f /alidata/server/nginx/logs/nginx.pid.oldbin</span><br><span class="line">kill -QUIT `cat /alidata/server/nginx/logs/nginx.pid.oldbin`</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看版本，发现已经是1.10.3版本，编译的参数也存在；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nginx-1.10.3]# nginx -V</span><br><span class="line">nginx version: nginx/1.10.3</span><br><span class="line">built by gcc 4.8.5 20150623 (Red Hat 4.8.5-11) (GCC) </span><br><span class="line">built with OpenSSL 1.0.1e-fips 11 Feb 2013</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --user=www --group=www --prefix=/alidata/server/nginx --with-http_stub_status_module --without-http-cache --with-http_ssl_module --with-http_gzip_static_module --with-pcre=../pcre-8.40</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看nginx进程 PID已经更改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nginx-1.10.3]# ps -ef |grep nginx</span><br><span class="line">root     24110     1  0 10:15 ?        00:00:00 nginx: master process /alidata/server/nginx/sbin/nginx -c /alidata/server/nginx/conf/nginx.conf</span><br><span class="line">www      24112 24110  0 10:15 ?        00:00:00 nginx: worker process</span><br><span class="line">www      24113 24110  0 10:15 ?        00:00:00 nginx: worker process</span><br><span class="line">www      24114 24110  0 10:15 ?        00:00:00 nginx: worker process</span><br><span class="line">www      24115 24110  0 10:15 ?        00:00:00 nginx: worker process</span><br><span class="line">root     24123  5324  0 10:29 pts/0    00:00:00 grep --color=auto nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Nginx1.4.4版本平滑升级新版本1.10.3就给大家介绍到这里</p>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-03-20T03:52:53.816Z" itemprop="dateUpdated">2020-03-20 11:52:53</time>
+</span><br>
+
+
+        
+        <a href="/2018/08/24/Nginx版本平滑升级/" target="_blank" rel="external">https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://www.jzfu.com">
+            <img src="/img/myimg/avatar.jpg" alt="姜志福(Jeff Jiang)">
+            姜志福(Jeff Jiang)
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/&title=《Nginx版本平滑升级》 — Jzfu's Blog&pic=https://www.jzfu.com/img/myimg/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/&title=《Nginx版本平滑升级》 — Jzfu's Blog&source=吾生也有涯，而知也无涯。在知识的汪洋学海里，要像大虫子一样学会虎食鲸吞；山外有山,人外有人。在高手如云的茫茫人海中，要像小白痴一样学会虛心请教。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Nginx版本平滑升级》 — Jzfu's Blog&url=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/&via=https://www.jzfu.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/08/31/Nginx中server-name参数详解/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Nginx中server_name参数详解</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/08/24/nginx配置支持php的pathinfo模式配置方法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">nginx配置支持php的pathinfo模式配置方法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/myimg/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/myimg/wechat.jpg" data-alipay="/img/myimg/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>姜志福(Jeff Jiang) &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/&title=《Nginx版本平滑升级》 — Jzfu's Blog&pic=https://www.jzfu.com/img/myimg/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/&title=《Nginx版本平滑升级》 — Jzfu's Blog&source=吾生也有涯，而知也无涯。在知识的汪洋学海里，要像大虫子一样学会虎食鲸吞；山外有山,人外有人。在高手如云的茫茫人海中，要像小白痴一样学会虛心请教。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Nginx版本平滑升级》 — Jzfu's Blog&url=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/&via=https://www.jzfu.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://www.jzfu.com/2018/08/24/Nginx版本平滑升级/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
